@@ -13,15 +13,17 @@ import javafx.scene.image.ImageView;
  * @author Walter Santacruz
  */
 public class Animal {
+    private String tipo;
     private ImageView sprite;
     private Vida vida;
     private Reproduccion reproduccion;
     private Alimentacion alimentacion;
-    public Animal() {
-        sprite = null;
-        vida = new Vida();
-        reproduccion = new Reproduccion();
-        alimentacion = new Alimentacion();
+    public Animal(String tipo) {
+        this.tipo = tipo;
+        this.sprite =new ImageView( new Image("/Assets/" + tipo + ".png"));
+        this.vida = new Vida();
+        this.reproduccion = new Reproduccion();
+        this.alimentacion = new Alimentacion();
     }
 
     public ImageView getSprite() {
@@ -54,6 +56,19 @@ public class Animal {
 
     public void setAlimentacion(Alimentacion alimentacion) {
         this.alimentacion = alimentacion;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    @Override
+    public String toString() {
+        return "tipo=" + tipo + "\nvida=" + vida + "\nreproduccion=" + reproduccion + "\nalimentacion=" + alimentacion;
     }
     
 

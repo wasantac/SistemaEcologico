@@ -37,4 +37,9 @@ public class Reproduccion {
         reloj++;
     }
 
+    @Override
+    public String toString() {
+        return  "tiempoReproduccion=" + tiempoReproduccion + ", reloj=" + reloj;
+    }
+
 }

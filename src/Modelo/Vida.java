@@ -51,4 +51,10 @@ public class Vida {
     public void morir(){
         vivo = false;
     }
+
+    @Override
+    public String toString() {
+        return "tiempoVida=" + tiempoVida + ", esperanza=" + esperanza + ", vivo=" + vivo ;
+    }
+    
 }

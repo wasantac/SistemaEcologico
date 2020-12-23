@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 public class ManejadorDatos {
     private static ArrayList<ImageView> imagenes  = new ArrayList<>();
     private static String[] especies = {"orca","foca","pinguino","pez","krill","plankton"};
+    private static ArrayList<Animal> animales = new ArrayList<>();
     private ManejadorDatos() { 
         AgregarDatos();
     }
@@ -44,6 +45,9 @@ public class ManejadorDatos {
         imagenes.add(new ImageView(new Image("/Assets/pez.png")));
         imagenes.add(new ImageView(new Image("/Assets/krill.png")));
         imagenes.add(new ImageView(new Image("/Assets/plankton.png")));
+        for(int i = 0 ; i < 6; i++){
+            animales.add(new Animal(especies[i]));
+        }
     }
 
     public static String[] getEspecies() {
@@ -52,6 +56,14 @@ public class ManejadorDatos {
 
     public static void setEspecies(String[] especies) {
         ManejadorDatos.especies = especies;
+    }
+
+    public static ArrayList<Animal> getAnimales() {
+        return animales;
+    }
+
+    public static void setAnimales(ArrayList<Animal> animales) {
+        ManejadorDatos.animales = animales;
     }
     
     

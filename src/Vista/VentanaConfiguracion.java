@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Modelo.Animal;
 import Modelo.ManejadorDatos;
 import java.util.ArrayList;
 import javafx.geometry.Insets;
@@ -132,7 +133,7 @@ public class VentanaConfiguracion {
                 ImageView im = ManejadorDatos.getImagenes().get(contador);
                 Button btn = new Button("Cambiar Datos");
                 caja.getChildren().addAll(im,btn);
-                Holder h = new Holder(ManejadorDatos.getEspecies()[contador],btn);
+                Holder h = new Holder(ManejadorDatos.getAnimales().get(contador),btn);
                 opcionAvanzada.add(h);
 
                 
@@ -148,29 +149,33 @@ public class VentanaConfiguracion {
 }
 
 class Holder{
-    private String especie;
+    private Animal animal;
     private Button btn;
     private Stage stage;
+    TextField minimoA = new TextField();
+    TextField maximoA = new TextField();
+    TextField esperanzaTXT = new TextField();
+    TextField reproTXT = new TextField();
 
-    public Holder(String especie, Button btn) {
-        this.especie = especie;
+    public Holder(Animal animal, Button btn) {
+        this.animal = animal;
         this.btn = btn;
         btn.setOnAction(e ->{
                Scene sc = new Scene(configuracionAvanzada(),400,400);
                
                stage  = new Stage();
                stage.setScene(sc);
-               stage.setTitle(especie);
+               stage.setTitle(animal.getTipo());
                stage.show();
         });
     }
 
-    public String getEspecie() {
-        return especie;
+    public Animal getEspecie() {
+        return animal;
     }
 
-    public void setEspecie(String especie) {
-        this.especie = especie;
+    public void setEspecie(Animal animal) {
+        this.animal = animal;
     }
 
     public Button getBtn() {
@@ -183,13 +188,59 @@ class Holder{
     
     public VBox configuracionAvanzada(){
         VBox vb = new VBox();
+        vb.setPadding(new Insets(10,10,30,10));
         vb.setAlignment(Pos.CENTER);
         vb.setSpacing(10);
+        Label titulo2 = new Label("CONFIGURACION " + animal.getTipo().toUpperCase());
+        titulo2.setStyle("-fx-font-size: 20px; -fx-font-weight:bold");
+        
+
         Button guardar = new Button("Guardar");
         guardar.setOnAction(e ->{
             stage.close();
         });
-        vb.getChildren().addAll(guardar);
+        VBox vb2 = animalDatos();
+        vb.getChildren().addAll(titulo2,this.animal.getSprite(),new Label(animal.toString()),vb2,guardar);
+        return vb;
+    }
+    
+    private VBox animalDatos(){
+        VBox vb = new VBox();
+        VBox.setVgrow(vb, Priority.ALWAYS);
+        vb.setAlignment(Pos.CENTER);
+        vb.setSpacing(10);
+        
+        HBox alimentacionHB = new HBox();
+        alimentacionHB.setAlignment(Pos.CENTER);
+        alimentacionHB.setSpacing(10);
+        Label alimentarLBL = new Label("Rangos Alimentacion: ");
+        
+        minimoA.setPromptText("min");
+        minimoA.setPrefWidth(50);
+        
+        maximoA.setPromptText("max");
+        maximoA.setPrefWidth(50);
+        alimentacionHB.getChildren().addAll(alimentarLBL,minimoA,maximoA);
+        
+        
+        HBox esperanzaHB = new HBox();
+        esperanzaHB.setAlignment(Pos.CENTER);
+        esperanzaHB.setSpacing(10);
+        Label esperanzaLBL = new Label("Esperanza: ");
+        
+        esperanzaTXT.setPrefWidth(50);
+        esperanzaHB.getChildren().addAll(esperanzaLBL,esperanzaTXT);
+        
+        HBox reproHB = new HBox();
+        reproHB.setAlignment(Pos.CENTER);
+        reproHB.setSpacing(10);
+        Label reproLBL = new Label("Reproduccion: ");
+        
+        reproTXT.setPrefWidth(50);
+        reproHB.getChildren().addAll(reproLBL,reproTXT);
+        
+        vb.getChildren().addAll(alimentacionHB,esperanzaHB,reproHB); 
+        
         return vb;
     }
     

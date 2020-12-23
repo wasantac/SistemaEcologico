@@ -42,4 +42,10 @@ public class Alimentacion {
     public boolean hambre(){
         return rangoAlimentacion[0] <= reloj &&  reloj <= rangoAlimentacion[1];
     }
+
+    @Override
+    public String toString() {
+        return "rangoAlimentacion={" + rangoAlimentacion[0] + "," + rangoAlimentacion[1] + "}" + ", reloj=" + reloj;
+    }
+    
 }
