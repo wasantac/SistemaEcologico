@@ -71,6 +71,12 @@ public class Animal {
         return "tipo=" + tipo + "\nvida=" + vida + "\nreproduccion=" + reproduccion + "\nalimentacion=" + alimentacion;
     }
     
+    public void ciclo(){
+        vida.ciclo();
+        alimentacion.ciclo();
+        reproduccion.ciclo();
+    }
+    
 
 }
 

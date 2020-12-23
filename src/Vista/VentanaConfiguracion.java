@@ -32,6 +32,7 @@ public class VentanaConfiguracion {
     private TextField ciclos;
     private TextField nIndividuos;
     private ArrayList<Holder> opcionAvanzada;
+    ManejadorDatos manejador = ManejadorDatos.getInstance();
     
     
     public VentanaConfiguracion() {
@@ -73,7 +74,7 @@ public class VentanaConfiguracion {
         dimensiones.setAlignment(Pos.CENTER);
         dimensiones.setSpacing(10);
         Label dimensionesLBL = new Label("Dimensiones: ");
-        dimension = new TextField();
+        dimension = new TextField(String.valueOf(manejador.getDimension()));
         dimension.setPromptText("Ingrese el tamaño de la matriz...");
         dimension.setPrefWidth(250);
         dimensiones.getChildren().addAll(dimensionesLBL,dimension);
@@ -83,7 +84,7 @@ public class VentanaConfiguracion {
         ciclosHB.setAlignment(Pos.CENTER);
         ciclosHB.setSpacing(10);
         Label ciclosLBL = new Label("Numero de Ciclos: ");
-        ciclos = new TextField();
+        ciclos = new TextField(String.valueOf(manejador.getCiclos()));
         ciclos.setPrefWidth(250);
         ciclos.setPromptText("Ingrese el numero de ciclos...");
         ciclosHB.getChildren().addAll(ciclosLBL,ciclos);
@@ -93,7 +94,7 @@ public class VentanaConfiguracion {
         individuosHB.setAlignment(Pos.CENTER);
         individuosHB.setSpacing(10);
         Label indLBL = new Label("Numero de Individuos");
-        nIndividuos = new TextField();
+        nIndividuos = new TextField(String.valueOf(manejador.getIndividuos()));
         nIndividuos.setPrefWidth(250);
         nIndividuos.setPromptText("Ingrese el numero de individuos...");
         individuosHB.getChildren().addAll(indLBL,nIndividuos);
@@ -105,7 +106,7 @@ public class VentanaConfiguracion {
         Button boton = new Button("Aceptar");
         boton.setPrefWidth(150);
         boton.setOnAction(e -> {
-            Stage stage = (Stage)this.getEscena().getWindow();
+            actualizarDatos();
         });
         
         //
@@ -119,7 +120,6 @@ public class VentanaConfiguracion {
     }
     
     private GridPane opcionesAvanzadas(){
-        ManejadorDatos m = ManejadorDatos.getInstance();
         GridPane gd = new GridPane();
         gd.setAlignment(Pos.CENTER);
         gd.setHgap(10);
@@ -144,6 +144,25 @@ public class VentanaConfiguracion {
             }
         }
         return gd;
+    }
+    
+    private void actualizarDatos(){
+        try{
+        boolean validarCampos = !dimension.getText().isEmpty() && !ciclos.getText().isEmpty() && !nIndividuos.getText().isEmpty() ;
+        if(validarCampos){
+            manejador.setDimension(Integer.parseInt(dimension.getText()));
+            manejador.setCiclos(Integer.parseInt(ciclos.getText()));
+            manejador.setIndividuos(Integer.parseInt(nIndividuos.getText()));
+            Stage stage = (Stage)this.getEscena().getWindow();
+            stage.setTitle("Simulador");
+            Simulador s = new Simulador();
+            stage.setScene(s.getEscena());
+            
+        }
+        }catch(NumberFormatException ex){
+            System.out.println("Error en los campos.");
+        }
+    
     }
     
 }
@@ -194,10 +213,10 @@ class Holder{
         Label titulo2 = new Label("CONFIGURACION " + animal.getTipo().toUpperCase());
         titulo2.setStyle("-fx-font-size: 20px; -fx-font-weight:bold");
         
-
         Button guardar = new Button("Guardar");
         guardar.setOnAction(e ->{
             stage.close();
+            actualizarDatos();
         });
         VBox vb2 = animalDatos();
         vb.getChildren().addAll(titulo2,this.animal.getSprite(),new Label(animal.toString()),vb2,guardar);
@@ -242,6 +261,38 @@ class Holder{
         vb.getChildren().addAll(alimentacionHB,esperanzaHB,reproHB); 
         
         return vb;
+    }
+    
+    private void actualizarDatos(){
+        if(!minimoA.getText().isEmpty() && !maximoA.getText().isEmpty()){
+            try{
+                int[] rango = {Integer.parseInt(minimoA.getText()),Integer.parseInt(maximoA.getText())};
+                if(rango[0] < rango[1]){
+                    this.animal.getAlimentacion().setRangoAlimentacion(rango);
+                }
+                else{
+                    System.out.println("Rango Invalido");
+                }
+                
+            }catch(NumberFormatException ex){
+                System.out.println("Rango Invalido");
+            }
+        }
+        if(!esperanzaTXT.getText().isEmpty()){
+            try{
+                this.animal.getVida().setEsperanza(Integer.parseInt(esperanzaTXT.getText()));
+            }catch(NumberFormatException ex){
+                System.out.println("Numero Invalido");
+            }
+        }
+        if(!reproTXT.getText().isEmpty()){
+            try{
+                this.animal.getReproduccion().setTiempoReproduccion(Integer.parseInt(reproTXT.getText()));
+            }
+            catch(NumberFormatException ex){
+                System.out.println("Numero Invalido");
+            }
+        }
     }
     
 }

@@ -17,6 +17,9 @@ public class ManejadorDatos {
     private static ArrayList<ImageView> imagenes  = new ArrayList<>();
     private static String[] especies = {"orca","foca","pinguino","pez","krill","plankton"};
     private static ArrayList<Animal> animales = new ArrayList<>();
+    private int dimension =10;
+    private int ciclos = 60;
+    private int individuos = 5;
     private ManejadorDatos() { 
         AgregarDatos();
     }
@@ -64,6 +67,30 @@ public class ManejadorDatos {
 
     public static void setAnimales(ArrayList<Animal> animales) {
         ManejadorDatos.animales = animales;
+    }
+
+    public int getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
+    }
+
+    public int getCiclos() {
+        return ciclos;
+    }
+
+    public void setCiclos(int ciclos) {
+        this.ciclos = ciclos;
+    }
+
+    public int getIndividuos() {
+        return individuos;
+    }
+
+    public void setIndividuos(int individuos) {
+        this.individuos = individuos;
     }
     
     
