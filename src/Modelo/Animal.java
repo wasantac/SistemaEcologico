@@ -14,17 +14,14 @@ import javafx.scene.image.ImageView;
  */
 public class Animal {
     private ImageView sprite;
-    private int tiempoVida;
-    private int esperanza;
-    private int tiempoReproduccion;
-    private int relojBiologico;
-
+    private Vida vida;
+    private Reproduccion reproduccion;
+    private Alimentacion alimentacion;
     public Animal() {
-        tiempoVida = 0;
-        esperanza = 60;
-        tiempoReproduccion = 2;
-        relojBiologico = 0;
         sprite = null;
+        vida = new Vida();
+        reproduccion = new Reproduccion();
+        alimentacion = new Alimentacion();
     }
 
     public ImageView getSprite() {
@@ -35,36 +32,30 @@ public class Animal {
         this.sprite = sprite;
     }
 
-    public int getTiempoVida() {
-        return tiempoVida;
+    public Vida getVida() {
+        return vida;
     }
 
-    public void setTiempoVida(int tiempoVida) {
-        this.tiempoVida = tiempoVida;
+    public void setVida(Vida vida) {
+        this.vida = vida;
     }
 
-    public int getEsperanza() {
-        return esperanza;
+    public Reproduccion getReproduccion() {
+        return reproduccion;
     }
 
-    public void setEsperanza(int esperanza) {
-        this.esperanza = esperanza;
+    public void setReproduccion(Reproduccion reproduccion) {
+        this.reproduccion = reproduccion;
     }
 
-    public int getTiempoReproduccion() {
-        return tiempoReproduccion;
+    public Alimentacion getAlimentacion() {
+        return alimentacion;
     }
 
-    public void setTiempoReproduccion(int tiempoReproduccion) {
-        this.tiempoReproduccion = tiempoReproduccion;
-    }
-
-    public int getRelojBiologico() {
-        return relojBiologico;
-    }
-
-    public void setRelojBiologico(int relojBiologico) {
-        this.relojBiologico = relojBiologico;
+    public void setAlimentacion(Alimentacion alimentacion) {
+        this.alimentacion = alimentacion;
     }
     
+
 }
+

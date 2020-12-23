@@ -30,11 +30,11 @@ public class VentanaConfiguracion {
     private TextField dimension;
     private TextField ciclos;
     private TextField nIndividuos;
-    private ArrayList<TextField> datos;
+    private ArrayList<Holder> opcionAvanzada;
     
     
     public VentanaConfiguracion() {
-        datos = new ArrayList<>();
+        opcionAvanzada = new ArrayList<>();
         crearConfiguracion();
     }
 
@@ -118,7 +118,7 @@ public class VentanaConfiguracion {
     }
     
     private GridPane opcionesAvanzadas(){
-        ManejadorDatos.getInstance();
+        ManejadorDatos m = ManejadorDatos.getInstance();
         GridPane gd = new GridPane();
         gd.setAlignment(Pos.CENTER);
         gd.setHgap(10);
@@ -127,15 +127,70 @@ public class VentanaConfiguracion {
         for(int i = 0; i < 3 ; i++){
             for(int j = 0 ; j < 2; j++){
                 VBox caja = new VBox();
+                caja.setAlignment(Pos.CENTER);
+                caja.setSpacing(10);
                 ImageView im = ManejadorDatos.getImagenes().get(contador);
-                TextField txt = new TextField();
-                caja.getChildren().addAll(im,txt);
-                datos.add(txt);
+                Button btn = new Button("Cambiar Datos");
+                caja.getChildren().addAll(im,btn);
+                Holder h = new Holder(ManejadorDatos.getEspecies()[contador],btn);
+                opcionAvanzada.add(h);
+
+                
+                
+                
                 gd.add(caja, i, j);
                 contador++;
             }
         }
         return gd;
+    }
+    
+}
+
+class Holder{
+    private String especie;
+    private Button btn;
+    private Stage stage;
+
+    public Holder(String especie, Button btn) {
+        this.especie = especie;
+        this.btn = btn;
+        btn.setOnAction(e ->{
+               Scene sc = new Scene(configuracionAvanzada(),400,400);
+               
+               stage  = new Stage();
+               stage.setScene(sc);
+               stage.setTitle(especie);
+               stage.show();
+        });
+    }
+
+    public String getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(String especie) {
+        this.especie = especie;
+    }
+
+    public Button getBtn() {
+        return btn;
+    }
+
+    public void setBtn(Button btn) {
+        this.btn = btn;
+    }
+    
+    public VBox configuracionAvanzada(){
+        VBox vb = new VBox();
+        vb.setAlignment(Pos.CENTER);
+        vb.setSpacing(10);
+        Button guardar = new Button("Guardar");
+        guardar.setOnAction(e ->{
+            stage.close();
+        });
+        vb.getChildren().addAll(guardar);
+        return vb;
     }
     
 }
