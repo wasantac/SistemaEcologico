@@ -158,7 +158,7 @@ public class Simulador {
         }
     }
 
-    private void comer(int i, int j,int fila,int columna) {
+    private void comer(int i, int j, int fila, int columna) {
         Animal cazador = animales[i][j];
         Animal presa = animales[fila][columna];
         if (cazador.getValor() > presa.getValor() && cazador.getAlimentacion().hambre()) {
@@ -208,7 +208,7 @@ public class Simulador {
                         animales[i][j].setMover(true);
                     } else {
                         boolean condicionMuerte = animales[i][j].getVida().getTiempoVida() >= animales[i][j].getVida().getEsperanza()
-                                || animales[i][j].getAlimentacion().getReloj() > animales[i][j].getAlimentacion().getRangoAlimentacion()[1] ;
+                                || animales[i][j].getAlimentacion().getReloj() > animales[i][j].getAlimentacion().getRangoAlimentacion()[1];
                         if (condicionMuerte) {
                             animales[i][j].morir();
                             matriz[i][j].getChildren().add(animales[i][j].getSprite());
@@ -244,16 +244,14 @@ public class Simulador {
     private boolean selectBlock(int i, int j, int fila, int columna, Animal a) {
         Random r = new Random();
         switch (r.nextInt(4)) {
-
             case 0: {
                 try {
-
                     --fila;
                     if (animales[fila][columna] == null) {
                         animales[fila][columna] = a;
                         animales[i][j] = null;
                     } else {
-                        comer(i,j,fila,columna);
+                        comer(i, j, fila, columna);
                     }
 
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -269,7 +267,7 @@ public class Simulador {
                         animales[fila][columna] = a;
                         animales[i][j] = null;
                     } else {
-                        comer(i,j,fila,columna);
+                        comer(i, j, fila, columna);
                     }
 
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -285,7 +283,7 @@ public class Simulador {
                         animales[fila][columna] = a;
                         animales[i][j] = null;
                     } else {
-                        comer(i,j,fila,columna);
+                        comer(i, j, fila, columna);
                     }
 
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -301,7 +299,7 @@ public class Simulador {
                         animales[fila][columna] = a;
                         animales[i][j] = null;
                     } else {
-                        comer(i,j,fila,columna);
+                        comer(i, j, fila, columna);
                     }
 
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -314,6 +312,26 @@ public class Simulador {
                 System.out.println("error");
                 break;
             }
+        }
+        //Reproduccion
+        if (animales[fila][columna].getReproduccion().getReloj() >= animales[fila][columna].getReproduccion().getTiempoReproduccion()) {
+            Animal nacido = new Animal(animales[fila][columna].getTipo());
+            animales[fila][columna].getReproduccion().setReloj(0);
+            nacido.getAlimentacion().setRangoAlimentacion(animales[fila][columna].getAlimentacion().getRangoAlimentacion());
+            nacido.getVida().setEsperanza(animales[fila][columna].getVida().getEsperanza());
+            nacido.getReproduccion().setTiempoReproduccion(animales[fila][columna].getReproduccion().getTiempoReproduccion());
+            Tooltip tool = new Tooltip();
+            tool.setText(a.toString());
+
+            Tooltip.install(a.getSprite(), tool);
+            nacido.getSprite().setOnMouseEntered(e -> {
+                tool.show(root.getScene().getWindow(), e.getScreenX() + 50, e.getScreenY());
+            });
+            nacido.getSprite().setOnMouseExited(e -> {
+                tool.hide();
+            });
+            toolAnimal.add(new ToolAnimal(tool, nacido));
+            animales[i][j] = nacido;
         }
         return true;
     }
