@@ -161,11 +161,8 @@ public class Simulador {
     private void comer(int i, int j,int fila,int columna) {
         Animal cazador = animales[i][j];
         Animal presa = animales[fila][columna];
-        System.out.println("cazador " + cazador.getValor() );
-        System.out.println("Presa " + presa.getValor());
-        System.out.println("Tiene hambre " + cazador.getAlimentacion().hambre());
-        System.out.println("mayor: " + Boolean.toString(cazador.getValor() > presa.getValor()));
         if (cazador.getValor() > presa.getValor() && cazador.getAlimentacion().hambre()) {
+            cazador.getAlimentacion().setReloj(0);
             animales[fila][columna] = cazador;
             animales[i][j] = null;
         }
@@ -210,7 +207,9 @@ public class Simulador {
                         matriz[i][j].getChildren().add(animales[i][j].getSprite());
                         animales[i][j].setMover(true);
                     } else {
-                        if (animales[i][j].getVida().getTiempoVida() >= animales[i][j].getVida().getEsperanza()) {
+                        boolean condicionMuerte = animales[i][j].getVida().getTiempoVida() >= animales[i][j].getVida().getEsperanza()
+                                || animales[i][j].getAlimentacion().getReloj() > animales[i][j].getAlimentacion().getRangoAlimentacion()[1] ;
+                        if (condicionMuerte) {
                             animales[i][j].morir();
                             matriz[i][j].getChildren().add(animales[i][j].getSprite());
                             animales[i][j].setMover(false);

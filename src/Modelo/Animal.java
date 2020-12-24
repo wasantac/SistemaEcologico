@@ -27,31 +27,26 @@ public class Animal {
         this.reproduccion = new Reproduccion();
         this.alimentacion = new Alimentacion();
         this.mover = false;
-        switch(tipo){
-            case "orca":{
-                this.valor = 5;
-            }
-            case "foca":{
-                this.valor = 4;
-            }
-            case "pinguino":{
-                this.valor = 3;
-            }
-            case "pez":{
-                this.valor = 2;
-            }
-            case "krill":{
-                this.valor = 2;
-            }
-            case "plankton":{
-                this.valor = 1;
-            }
-            case "roca":{
-                this.valor = 99999999;
-            }
-            default:{
-                this.valor = 0;
-            }
+        if(tipo.equalsIgnoreCase("orca")){
+            this.valor = 5;
+        }
+        else if(tipo.equalsIgnoreCase("foca")){
+            this.valor = 4;
+        }
+        else if(tipo.equalsIgnoreCase("pinguino")){
+            this.valor = 3;
+        }
+        else if(tipo.equalsIgnoreCase("pez")){
+            this.valor = 2;
+        }
+        else if(tipo.equalsIgnoreCase("krill")){
+            this.valor = 1;
+        }
+        else if(tipo.equalsIgnoreCase("plankton")){
+            this.valor = 0;
+        }
+        else{
+            this.valor = 999;
         }
     }
 
