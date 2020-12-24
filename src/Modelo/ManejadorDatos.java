@@ -14,12 +14,14 @@ import javafx.scene.image.ImageView;
  * @author Walter Santacruz
  */
 public class ManejadorDatos {
+   
     private static ArrayList<ImageView> imagenes  = new ArrayList<>();
     private static String[] especies = {"orca","foca","pinguino","pez","krill","plankton"};
     private static ArrayList<Animal> animales = new ArrayList<>();
     private int dimension =10;
     private int ciclos = 60;
     private int individuos = 5;
+    
     private ManejadorDatos() { 
         AgregarDatos();
     }

@@ -14,16 +14,45 @@ import javafx.scene.image.ImageView;
  */
 public class Animal {
     private String tipo;
+    private int valor;
     private ImageView sprite;
     private Vida vida;
     private Reproduccion reproduccion;
     private Alimentacion alimentacion;
+    private boolean mover;
     public Animal(String tipo) {
         this.tipo = tipo;
         this.sprite =new ImageView( new Image("/Assets/" + tipo + ".png"));
         this.vida = new Vida();
         this.reproduccion = new Reproduccion();
         this.alimentacion = new Alimentacion();
+        this.mover = false;
+        switch(tipo){
+            case "orca":{
+                this.valor = 5;
+            }
+            case "foca":{
+                this.valor = 4;
+            }
+            case "pinguino":{
+                this.valor = 3;
+            }
+            case "pez":{
+                this.valor = 2;
+            }
+            case "krill":{
+                this.valor = 2;
+            }
+            case "plankton":{
+                this.valor = 1;
+            }
+            case "roca":{
+                this.valor = 99999999;
+            }
+            default:{
+                this.valor = 0;
+            }
+        }
     }
 
     public ImageView getSprite() {
@@ -68,13 +97,34 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "tipo=" + tipo + "\nvida=" + vida + "\nreproduccion=" + reproduccion + "\nalimentacion=" + alimentacion;
+        return "tipo=" + tipo + "\nvida=" + vida + "\nreproduccion=" + reproduccion + "\nalimentacion=" + alimentacion + "\nvalor=" + valor;
     }
     
     public void ciclo(){
         vida.ciclo();
         alimentacion.ciclo();
         reproduccion.ciclo();
+    }
+    
+    public void morir(){
+        this.vida.morir();
+        this.sprite = new ImageView( new Image("/Assets/" + "cadaver" + ".png"));
+    }
+
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
+
+    public boolean isMover() {
+        return mover;
+    }
+
+    public void setMover(boolean mover) {
+        this.mover = mover;
     }
     
 
