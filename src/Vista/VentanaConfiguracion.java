@@ -21,10 +21,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class VentanaConfiguracion {
     private Scene escena;
     private VBox root;

@@ -14,10 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class SistemaEcologico extends Application {
     
     @Override

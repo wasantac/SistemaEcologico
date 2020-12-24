@@ -5,10 +5,7 @@
  */
 package Modelo;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class Reproduccion {
     private int tiempoReproduccion;
     private int reloj;

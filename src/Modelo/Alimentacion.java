@@ -5,10 +5,7 @@
  */
 package Modelo;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class Alimentacion {
     private int[] rangoAlimentacion;
     private int reloj;

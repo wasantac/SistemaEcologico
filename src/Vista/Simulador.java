@@ -7,32 +7,26 @@ package Vista;
 
 import Modelo.Animal;
 import Modelo.ManejadorDatos;
-import static java.awt.SystemColor.control;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class Simulador {
 
     private Scene escena;
@@ -40,15 +34,19 @@ public class Simulador {
     private GridPane grid;
     private Button avanzar;
     private Button automatico;
+    private Button reiniciar;
+    private Button salir;
     private Label ciclosLBL;
-
+    private boolean end;
     ManejadorDatos manejador = ManejadorDatos.getInstance();
     VBox[][] matriz = new VBox[manejador.getDimension()][manejador.getDimension()];
     Animal[][] animales = new Animal[manejador.getDimension()][manejador.getDimension()];
     private int ciclos;
     private ArrayList<ToolAnimal> toolAnimal = new ArrayList<>();
+    private ArrayList<Thread> hilos = new ArrayList<>();
 
     public Simulador() {
+        end = false;
         this.ciclos = manejador.getCiclos();
         cargarConfiguracion();
         agregarAnimales();
@@ -61,7 +59,7 @@ public class Simulador {
         root.setSpacing(20);
         VBox.setMargin(root, new Insets(10, 10, 10, 10));
         root.setPadding(new Insets(10, 10, 30, 10));
-
+        
         grid = new GridPane();
         grid.setGridLinesVisible(true);
         llenarGrid();
@@ -71,8 +69,11 @@ public class Simulador {
         hb.setSpacing(20);
         avanzar = new Button("Avanzar");
         automatico = new Button("Automatico");
-        hb.getChildren().addAll(avanzar, automatico);
-
+        reiniciar = new Button("Reiniciar");
+        salir = new Button("Salir");
+        hb.getChildren().addAll(avanzar, automatico, reiniciar, salir);
+        GridPane.setHgrow(grid, Priority.ALWAYS);
+        GridPane.setVgrow(grid, Priority.ALWAYS);
         root.getChildren().addAll(grid, ciclosLBL, hb);
 
         escena = new Scene(root, 800, 800);
@@ -121,8 +122,9 @@ public class Simulador {
     }
 
     private void funcionalidad() {
-        Stage stage = (Stage) escena.getWindow();
+
         avanzar.setOnAction(e -> {
+            end = true;
             if (ciclos <= 0) {
 
                 ciclosLBL.setText("Ciclos: 0");
@@ -135,6 +137,38 @@ public class Simulador {
             }
 
         });
+        automatico.setOnAction(e -> {
+            automatico.setDisable(true);
+            Thread thread = new Thread(() -> {
+                while (ciclos > 0 || end) {
+                    try {
+                        Platform.runLater(() -> {
+                            avanzar.fire();
+
+                        });
+                        Thread.sleep(100);
+
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Simulador.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            });
+            hilos.add(thread);
+            thread.start();
+        });
+        reiniciar.setOnAction(e -> {
+            end = true;
+            Stage stage = (Stage) reiniciar.getScene().getWindow();
+            Simulador s = new Simulador();
+            stage.setScene(s.getEscena());
+
+        });
+
+        salir.setOnAction(e -> {
+            System.exit(0);
+        });
+
         for (int i = 0; i < manejador.getDimension(); i++) {
             for (int j = 0; j < manejador.getDimension(); j++) {
                 if (animales[i][j] != null) {

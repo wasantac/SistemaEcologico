@@ -5,10 +5,7 @@
  */
 package Modelo;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class Vida {
     private int tiempoVida;
     private int esperanza;

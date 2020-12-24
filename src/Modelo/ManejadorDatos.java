@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/**
- *
- * @author Walter Santacruz
- */
 public class ManejadorDatos {
    
     private static ArrayList<ImageView> imagenes  = new ArrayList<>();

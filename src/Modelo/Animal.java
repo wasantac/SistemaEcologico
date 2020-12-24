@@ -8,10 +8,7 @@ package Modelo;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/**
- *
- * @author Walter Santacruz
- */
+
 public class Animal {
     private String tipo;
     private int valor;
