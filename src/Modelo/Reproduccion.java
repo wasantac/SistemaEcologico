@@ -5,13 +5,15 @@
  */
 package Modelo;
 
+import java.util.Random;
+
 
 public class Reproduccion {
     private int tiempoReproduccion;
     private int reloj;
 
     public Reproduccion() {
-        tiempoReproduccion = 20;
+        setReproduccion();
         reloj = 0;
     }
 
@@ -37,6 +39,17 @@ public class Reproduccion {
     @Override
     public String toString() {
         return  "tiempoReproduccion=" + tiempoReproduccion + ", reloj=" + reloj;
+    }
+    
+    private void setReproduccion(){
+        Random r = new Random();
+        int numero = r.nextInt(20);
+        if(numero >= 10){
+            this.tiempoReproduccion = numero;
+        }
+        else{
+            setReproduccion();
+        }
     }
 
 }

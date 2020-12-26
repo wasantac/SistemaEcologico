@@ -5,6 +5,8 @@
  */
 package Modelo;
 
+import java.util.Random;
+
 
 public class Vida {
     private int tiempoVida;
@@ -14,7 +16,7 @@ public class Vida {
     public Vida() {
         vivo = true;
         tiempoVida = 0;
-        esperanza = 60;
+        setVida();
     }
 
     public int getTiempoVida() {
@@ -52,6 +54,16 @@ public class Vida {
     @Override
     public String toString() {
         return "tiempoVida=" + tiempoVida + ", esperanza=" + esperanza + ", vivo=" + vivo ;
+    }
+    private void setVida(){
+        Random r = new Random();
+        int numero = r.nextInt(60);
+        if(numero > 40){
+            this.esperanza = numero;
+        }
+        else{
+            setVida();
+        }
     }
     
 }

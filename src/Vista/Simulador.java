@@ -26,7 +26,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class Simulador {
 
     private Scene escena;
@@ -36,6 +35,7 @@ public class Simulador {
     private Button automatico;
     private Button reiniciar;
     private Button salir;
+    private Button pausa;
     private Label ciclosLBL;
     private boolean end;
     ManejadorDatos manejador = ManejadorDatos.getInstance();
@@ -59,7 +59,7 @@ public class Simulador {
         root.setSpacing(20);
         VBox.setMargin(root, new Insets(10, 10, 10, 10));
         root.setPadding(new Insets(10, 10, 30, 10));
-        
+
         grid = new GridPane();
         grid.setGridLinesVisible(true);
         llenarGrid();
@@ -69,9 +69,10 @@ public class Simulador {
         hb.setSpacing(20);
         avanzar = new Button("Avanzar");
         automatico = new Button("Automatico");
+        pausa = new Button("Pausa");
         reiniciar = new Button("Reiniciar");
         salir = new Button("Salir");
-        hb.getChildren().addAll(avanzar, automatico, reiniciar, salir);
+        hb.getChildren().addAll(avanzar, automatico, pausa,reiniciar, salir);
         GridPane.setHgrow(grid, Priority.ALWAYS);
         GridPane.setVgrow(grid, Priority.ALWAYS);
         root.getChildren().addAll(grid, ciclosLBL, hb);
@@ -124,7 +125,7 @@ public class Simulador {
     private void funcionalidad() {
 
         avanzar.setOnAction(e -> {
-            end = true;
+            
             if (ciclos <= 0) {
 
                 ciclosLBL.setText("Ciclos: 0");
@@ -139,8 +140,12 @@ public class Simulador {
         });
         automatico.setOnAction(e -> {
             automatico.setDisable(true);
+            end = true;
             Thread thread = new Thread(() -> {
-                while (ciclos > 0 || end) {
+                while (ciclos > 0) {
+                    if(!end){
+                        break;
+                    }
                     try {
                         Platform.runLater(() -> {
                             avanzar.fire();
@@ -151,6 +156,11 @@ public class Simulador {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Simulador.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
+                if(ciclos == 0){
+                    automatico.setDisable(true);
+                    avanzar.setDisable(true);
+                    pausa.setDisable(true);
                 }
 
             });
@@ -168,7 +178,12 @@ public class Simulador {
         salir.setOnAction(e -> {
             System.exit(0);
         });
-
+        
+        pausa.setOnAction(e ->{
+            end = false;
+            automatico.setDisable(false);
+        });
+        
         for (int i = 0; i < manejador.getDimension(); i++) {
             for (int j = 0; j < manejador.getDimension(); j++) {
                 if (animales[i][j] != null) {
@@ -196,9 +211,19 @@ public class Simulador {
         Animal cazador = animales[i][j];
         Animal presa = animales[fila][columna];
         if (cazador.getValor() > presa.getValor() && cazador.getAlimentacion().hambre()) {
-            cazador.getAlimentacion().setReloj(0);
-            animales[fila][columna] = cazador;
-            animales[i][j] = null;
+            if (presa.getTipo().equalsIgnoreCase("cadaver")) { //Condicion para que solo krill y plankton coman
+                if (cazador.getValor() <= 2) {
+                    cazador.getAlimentacion().setReloj(0);
+                    animales[fila][columna] = cazador;
+                    animales[i][j] = null;
+                }
+
+            } else {
+                cazador.getAlimentacion().setReloj(0);
+                animales[fila][columna] = cazador;
+                animales[i][j] = null;
+            }
+
         }
     }
 
