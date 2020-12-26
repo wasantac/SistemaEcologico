@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -63,6 +64,9 @@ public class Simulador {
         grid = new GridPane();
         grid.setGridLinesVisible(true);
         llenarGrid();
+        grid.setAlignment(Pos.CENTER);
+        GridPane.setVgrow(grid, Priority.ALWAYS);
+        GridPane.setHgrow(grid, Priority.ALWAYS);
         ciclosLBL = new Label("Ciclos: " + String.valueOf(manejador.getCiclos()));
         HBox hb = new HBox();
         hb.setAlignment(Pos.CENTER);
