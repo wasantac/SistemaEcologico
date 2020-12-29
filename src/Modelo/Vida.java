@@ -48,7 +48,7 @@ public class Vida {
     }
     
     public void morir(){
-        vivo = false;
+        this.vivo = false;
     }
 
     @Override

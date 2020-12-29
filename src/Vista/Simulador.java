@@ -8,6 +8,7 @@ package Vista;
 import Modelo.Animal;
 import Modelo.ManejadorDatos;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -76,7 +77,7 @@ public class Simulador {
         pausa = new Button("Pausa");
         reiniciar = new Button("Reiniciar");
         salir = new Button("Salir");
-        hb.getChildren().addAll(avanzar, automatico, pausa,reiniciar, salir);
+        hb.getChildren().addAll(avanzar, automatico, pausa, reiniciar, salir);
         GridPane.setHgrow(grid, Priority.ALWAYS);
         GridPane.setVgrow(grid, Priority.ALWAYS);
         root.getChildren().addAll(grid, ciclosLBL, hb);
@@ -129,14 +130,19 @@ public class Simulador {
     private void funcionalidad() {
 
         avanzar.setOnAction(e -> {
-            
+
             if (ciclos <= 0) {
 
                 ciclosLBL.setText("Ciclos: 0");
             } else {
                 mover();
                 for (ToolAnimal a : toolAnimal) {
-                    a.getTool().setText(a.getA().toString());
+                    if(a.getA().getTipo().equalsIgnoreCase("cadaver")){
+                       a.getTool().setText("");
+                    }else{
+                        a.getTool().setText(a.getA().toString());
+                    }
+                    
                 }
                 ciclosLBL.setText("Ciclos: " + String.valueOf(--ciclos));
             }
@@ -147,7 +153,7 @@ public class Simulador {
             end = true;
             Thread thread = new Thread(() -> {
                 while (ciclos > 0) {
-                    if(!end){
+                    if (!end) {
                         break;
                     }
                     try {
@@ -161,7 +167,7 @@ public class Simulador {
                         Logger.getLogger(Simulador.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                if(ciclos == 0){
+                if (ciclos == 0) {
                     automatico.setDisable(true);
                     avanzar.setDisable(true);
                     pausa.setDisable(true);
@@ -182,12 +188,12 @@ public class Simulador {
         salir.setOnAction(e -> {
             System.exit(0);
         });
-        
-        pausa.setOnAction(e ->{
+
+        pausa.setOnAction(e -> {
             end = false;
             automatico.setDisable(false);
         });
-        
+
         for (int i = 0; i < manejador.getDimension(); i++) {
             for (int j = 0; j < manejador.getDimension(); j++) {
                 if (animales[i][j] != null) {
@@ -216,7 +222,7 @@ public class Simulador {
         Animal presa = animales[fila][columna];
         if (cazador.getValor() > presa.getValor() && cazador.getAlimentacion().hambre()) {
             if (presa.getTipo().equalsIgnoreCase("cadaver")) { //Condicion para que solo krill y plankton coman
-                if (cazador.getValor() <= 2) {
+                if (cazador.getTipo().equalsIgnoreCase("krill") || cazador.getTipo().equalsIgnoreCase("plankton")) {
                     cazador.getAlimentacion().setReloj(0);
                     animales[fila][columna] = cazador;
                     animales[i][j] = null;
@@ -237,7 +243,6 @@ public class Simulador {
                 if (animales[i][j] != null) {
                     if (animales[i][j].getVida().isVivo()) {
                         Animal a = animales[i][j];
-                        Random r = new Random();
                         int fila = i;
                         int columna = j;
 
@@ -266,7 +271,7 @@ public class Simulador {
         for (int i = 0; i < manejador.getDimension(); i++) {
             for (int j = 0; j < manejador.getDimension(); j++) {
                 if (animales[i][j] != null) {
-                    if (animales[i][j].getTipo().equalsIgnoreCase("roca")) {
+                    if (animales[i][j].getTipo().equalsIgnoreCase("roca") || animales[i][j].getTipo().equalsIgnoreCase("cadaver")) {
                         matriz[i][j].getChildren().add(animales[i][j].getSprite());
                         animales[i][j].setMover(true);
                     } else {
@@ -376,6 +381,7 @@ public class Simulador {
                 break;
             }
         }
+
         //Reproduccion
         if (animales[fila][columna].getReproduccion().getReloj() >= animales[fila][columna].getReproduccion().getTiempoReproduccion()) {
             Animal nacido = new Animal(animales[fila][columna].getTipo());

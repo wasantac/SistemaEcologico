@@ -101,6 +101,7 @@ public class Animal {
     public void morir(){
         this.tipo = "cadaver";
         this.vida.morir();
+        this.vida.setVivo(false);
         this.valor = -1;
         this.sprite = new ImageView( new Image("/Assets/" + "cadaver" + ".png"));
     }
