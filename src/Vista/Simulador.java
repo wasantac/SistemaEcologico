@@ -136,13 +136,18 @@ public class Simulador {
                 ciclosLBL.setText("Ciclos: 0");
             } else {
                 mover();
-                for (ToolAnimal a : toolAnimal) {
-                    if(a.getA().getTipo().equalsIgnoreCase("cadaver")){
-                       a.getTool().setText("");
-                    }else{
+                Iterator<ToolAnimal> it = toolAnimal.iterator();
+                while (it.hasNext()) {
+                    ToolAnimal a = it.next();
+                    if (a.getA().getTipo().equalsIgnoreCase("cadaver")) {
+                        a.getA().getSprite().setOnMouseEntered(event -> {
+                            
+                        });
+                       
+                    } else {
                         a.getTool().setText(a.getA().toString());
                     }
-                    
+
                 }
                 ciclosLBL.setText("Ciclos: " + String.valueOf(--ciclos));
             }

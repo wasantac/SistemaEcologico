@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SistemaEcologico.jar" size="59172" download="eager" />
+    <jar href="SistemaEcologico.jar" size="59254" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="sistemaecologico.SistemaEcologico"  name="SistemaEcologico" />
   <update check="always"/>
